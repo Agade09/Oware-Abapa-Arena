@@ -19,7 +19,7 @@ using namespace std;
 using namespace std::chrono;
 
 constexpr bool tests{true};
-constexpr bool Debug_AI{true},Timeout{false};
+constexpr bool Debug_AI{false},Timeout{false};
 constexpr double FirstTurnTime{1*(Timeout?1:10)},TimeLimit{0.050*(Timeout?1:10)};
 constexpr int PIPE_READ{0},PIPE_WRITE{1};
 constexpr int N{2};
