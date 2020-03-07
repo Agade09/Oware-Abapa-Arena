@@ -19,7 +19,7 @@ using namespace std;
 using namespace std::chrono;
 
 constexpr bool tests{true};
-constexpr bool Debug_AI{false},Timeout{false};
+constexpr bool Debug_AI{true},Timeout{false};
 constexpr double FirstTurnTime{1*(Timeout?1:10)},TimeLimit{0.050*(Timeout?1:10)};
 constexpr int PIPE_READ{0},PIPE_WRITE{1};
 constexpr int N{2};
@@ -81,6 +81,7 @@ struct state{
             score[0]+=accumulate(seeds.begin(),next(seeds.begin(),Houses_Per_Player),0);
             fill(seeds.begin(),next(seeds.begin(),Houses_Per_Player),0);
         }
+        ++turn;
     }
     inline bool game_over()const{
         return valid_moves.empty() || turn>Turn_Limit || any_of(score.begin(),score.end(),[](const int s){return s>=Seed_Win_Threshold;});
@@ -331,6 +332,7 @@ array<float,N> Play_Round(const array<string,N> &Bot_Names){
 		}
 		else{
 			Points[(winner+i)%N]+=1;
+            //Points[winner]+=1;
 		}
 	}
 	return Points;
@@ -384,6 +386,6 @@ int main(int argc,char **argv){
         double sigma{sqrt(p*(1-p)/games)};
         double better{0.5+0.5*erf((p-0.5)/(sqrt(2)*sigma))};
         #pragma omp critical
-        cout << "Wins:" << setprecision(4) << 100*p << "+-" << 100*sigma << "% Rounds:" << games << " Draws:" << draws << " " << better*100 << "% chance that " << Bot_Names[0] << " is better" << endl;
+        cout << "Wins:" << setprecision(4) << 100*p << "+-" << 100*sigma << "% Games:" << games << " Draws:" << draws << " " << better*100 << "% chance that " << Bot_Names[0] << " is better" << endl;
     }
 }
